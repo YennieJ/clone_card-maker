@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./image_file_input.module.css";
 const ImageFileInput = ({ imageUploader, name, onFileChange }) => {
+  const [loding, setLoding] = useState(false);
   const inputRef = useRef();
   const onButtonClick = (event) => {
     event.preventDefault();
@@ -13,9 +14,10 @@ const ImageFileInput = ({ imageUploader, name, onFileChange }) => {
 
     // imageUploader.upload(event.target.files[0])
     // .then(console.log)  async 아닐때
-
+    setLoding(true);
     const uploaded = await imageUploader.upload(event.target.files[0]);
     // console.log(uploaded); 아래하기전에 확인
+    setLoding(false);
     onFileChange({
       name: uploaded.original_filename,
       url: uploaded.url,
@@ -31,9 +33,15 @@ const ImageFileInput = ({ imageUploader, name, onFileChange }) => {
         name="file"
         onChange={onChange}
       />
-      <button className={styles.button} onClick={onButtonClick}>
-        {name || "No file"}
-      </button>
+      {!loding && (
+        <button
+          className={`${styles.button} ${name ? styles.pink : styles.grey}`}
+          onClick={onButtonClick}
+        >
+          {name || "No file"}
+        </button>
+      )}
+      {loding && <div className={styles.loding}></div>}
     </div>
   );
 };

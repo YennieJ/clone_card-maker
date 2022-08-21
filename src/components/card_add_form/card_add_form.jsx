@@ -13,17 +13,17 @@ const CardAddFrom = ({ FileInput, onAdd }) => {
   const [file, setFile] = useState({ fileName: null, fileURL: null });
 
   const onFileChange = (file) => {
+    console.log(file);
     setFile({
       fileName: file.name,
-      fileULR: file.url,
+      fileURL: file.url,
     });
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
-
     const card = {
-      id: Date.now(),
+      id: Date.now(), //uuid
       name: nameRef.current.value || "",
       company: companyRef.current.value || "",
       theme: themeRef.current.value,
@@ -31,7 +31,7 @@ const CardAddFrom = ({ FileInput, onAdd }) => {
       email: emailRef.current.value || "",
       message: messageRef.current.value || "",
       fileName: file.fileName || "",
-      fileURL: file.url || "",
+      fileURL: file.fileURL || "",
     };
     formRef.current.reset();
     setFile({ fileName: null, fileURL: null });
